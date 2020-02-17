@@ -219,4 +219,13 @@ class LineCirclePartView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : LineCirclePartView {
+            val view : LineCirclePartView = LineCirclePartView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
