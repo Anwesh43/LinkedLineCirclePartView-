@@ -194,4 +194,26 @@ class LineCirclePartView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : LineCirclePartView) {
+
+        private val animator : Animator = Animator(view)
+        private val lcp : LineCirclePart = LineCirclePart(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            lcp.draw(canvas, paint)
+            animator.animate {
+                lcp.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lcp.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
