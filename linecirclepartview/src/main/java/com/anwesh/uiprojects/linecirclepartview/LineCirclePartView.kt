@@ -34,17 +34,17 @@ fun Canvas.drawLineCirclePart(i : Int, scale : Float, size : Float, paint : Pain
     val y : Float = size - (size - r) * sf
     var y1 : Float = 0f
     if (scale > 0.5f) {
-        y1 = (size - r) * sf
+        y1 = (size - r) * (1 - sf)
     }
     save()
     scale(1f, 1f - 2 * i)
-    translate(0f, 0f)
-    drawLine(0f, 0f, 0f, y, paint)
-    restore()
+    drawLine(0f, size, 0f, y, paint)
     save()
     translate(0f, y1)
     drawArc(RectF(-r, -r, r, r), 0f, 180f, false, paint)
     restore()
+    restore()
+
 }
 
 fun Canvas.drawLineCircleParts(scale : Float, size : Float, paint : Paint) {
@@ -65,6 +65,9 @@ fun Canvas.drawLCPNode(i : Int, scale : Float, paint : Paint) {
     save()
     translate(w / 2, gap * (i + 1))
     drawLineCircleParts(scale, size, paint)
+    for (j in 0..(lines - 1)) {
+        drawLine(-w / 2, size * (1 - 2 * j), w / 2, size * (1 - 2 * j), paint)
+    }
     restore()
 }
 
@@ -143,8 +146,10 @@ class LineCirclePartView(ctx : Context) : View(ctx) {
         }
 
         fun addNeighbor() {
-            next = LCPNode(i + 1)
-            next?.prev = this
+            if (i < nodes - 1) {
+                next = LCPNode(i + 1)
+                next?.prev = this
+            }
         }
 
         fun draw(canvas : Canvas, paint : Paint) {
