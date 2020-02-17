@@ -130,4 +130,44 @@ class LineCirclePartView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class LCPNode(var i : Int, val state : State = State()) {
+
+        private var next : LCPNode? = null
+        private var prev : LCPNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            next = LCPNode(i + 1)
+            next?.prev = this
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawLCPNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : LCPNode {
+            var curr : LCPNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
