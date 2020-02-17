@@ -66,3 +66,19 @@ fun Canvas.drawLCPNode(i : Int, scale : Float, paint : Paint) {
     drawLineCircleParts(scale, size, paint)
     restore()
 }
+
+class LineCirclePartView(ctx : Context) : View(ctx) {
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
+}
